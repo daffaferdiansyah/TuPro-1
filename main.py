@@ -53,7 +53,7 @@ def fitnessSort(population):
         idx = pas - 1
         i = pas
         while i < len(population):
-            if fitness[idx] < fitness[i]:
+            if fitness[idx] > fitness[i]:
                 idx = i
             i += 1
         temp = population[pas-1]
