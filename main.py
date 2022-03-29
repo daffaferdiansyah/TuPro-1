@@ -2,7 +2,7 @@ import math
 import random
 
 def generateChromosome():
-    #membuat desain kromosom dengan panjang 6 dan tipe data integer
+    #membuat satu kromosom dengan panjang 6 dan tipe data integer
     chromosome = []
     for _ in range(6):
         chromosome.append(random.randint(0, 9))
@@ -42,7 +42,7 @@ def calculateFitness(population):
     for i in range(len(population)):
         fitness_temp = fitnessFunction(population[i])
         fitness.append(fitness_temp)
-        print(fitness[i])
+
     return fitness
 
 def fitnessSort(population):
@@ -65,17 +65,96 @@ def fitnessSort(population):
 
     return population
 
-def tournamentSelection(population):
+def getElitism(population):
+    elitism = []
+    for i in range(30):
+        elitism.append(population[i])
     
+    return elitism
 
-   
+def parentSelection(population):
+    parent = []
+    for i in range(20, 90):
+        parent.append(population[i])
+
+    return parent
+
+def matingPool(parent):
+    pasangan = []
+    for i in range(len(parent)//2):
+        pasangan_temp = []
+        p1 = 0
+        p2 = random.randint(1, (len(parent)-1))
+        pasangan_temp.append(parent[p1])
+        pasangan_temp.append(parent[p2])
+        pasangan.append(pasangan_temp)
+        parent.pop(p2); parent.pop(p1)
+    
+    print(pasangan)
+    return pasangan
+
+def crossover(p1, p2, pc):
+    r = random.uniform(0, 1)
+    if r < pc:
+        t = random.randint(1, 4)
+        c1 = p1[0:t], p2[t:5]
+        c2 = p2[0:t], p1[t:5]
+    else:
+        c1 = p1
+        c2 = p2
+
+    return [c1, c2]
+
+def mutation(child, pm):
+    r = random.uniform(0, 1)
+    if r < pm:
+        child[0][random.randint(0,5)] = random.randint(0, 9)
+        child[1][random.randint(0,5)] = random.randint(0, 9)
+    
+    return child
+
+def generationalReplacement(pop_size, pc, pm, generation):
+    popu = generatePopulation(pop_size)
+    for i in range(generation):
+        fitness = calculateFitness(popu)
+        fitnessSort(popu)
+        newPopu = getElitism(popu)
+        parent = parentSelection(popu)
+        i = 0
+        while len(newPopu) < pop_size:
+            pasangan = matingPool(parent)
+            
+            offspring = crossover(p1, p2, pc)
+            offspring = mutation(offspring, pm)
+            newPopu.append(offspring[i][0])
+            newPopu.append(offspring[i][1])
+            i += 1
+        popu = newPopu
+        fitness = calculateFitness(popu)
+
+    return popu, fitness
+
+def printHasil():
+    pop_size = 100; pc = 0.65; pm = 0.04; generation = 100
+    gen = generationalReplacement(pop_size, pc, pm, generation)
+    best_chrom = gen[0][0]
+    best_fitness = gen[1][0]
+    nilaiX = decodeX(best_chrom)
+    nilaiY = decodeY(best_chrom)
+    print("-------------------------------------------------------------\n")
+    print("Kromosom terbaik\t\t: ", best_chrom)
+    print("Nilai fitness terbaik\t:", best_fitness)
+    print("Nilai x \t\t=", nilaiX)
+    print("Nilai y \t\t=", nilaiY)
+    print("Jumlah generasi \t:", generation)
+
         
+printHasil()
 
-pop = generatePopulation(10)
 
-print(pop)
-fitnessSort(pop)
-print(pop)
+
+
+
 
 
 
