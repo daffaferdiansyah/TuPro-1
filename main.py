@@ -215,4 +215,4 @@ generationalReplacement(pop_size, pc, pm, generation)
 # Nilai x                 : -3.148148148148148
 # Nilai y                 : -4.70970970970971
 # Nilai fitness terbaik   : 9999.999001826034
-# Hasil fungsi objektif   : 0.00000000000998174066
+
