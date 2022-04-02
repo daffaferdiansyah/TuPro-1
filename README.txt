@@ -1,0 +1,1 @@
+Cara menjalankan program : Buka file main.py pada IDE atau online compiler, lalu lakukan run
